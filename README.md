@@ -1,5 +1,7 @@
 # flutter_web
 
+코드는 lib파일의 main.dart에 들어있음.
+
 A new Flutter project.
 
 ## Getting Started
