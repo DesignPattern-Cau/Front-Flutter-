@@ -26,6 +26,16 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
+  final _MenuType = ["제목", "작가"];
+  String _dropdownValue = "";
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _dropdownValue = _MenuType[0];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,8 +43,8 @@ class MainPageState extends State<MainPage> {
         title: Row(
           children: [
             Text(
-              "중앙문고",
-              style: TextStyle(fontSize: 28),
+              "중앙도서관",
+              style: TextStyle(fontSize: 48),
             ),
             Expanded(
               child: SizedBox(
@@ -67,16 +77,27 @@ class MainPageState extends State<MainPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Container(
+                      width: 70,
+                      height: 64,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(13),
-                        child: Text(
-                          "도서명",
-                          style: TextStyle(fontSize: 28),
-                        ),
+                          borderRadius: BorderRadius.circular(10), //모서리를 둥글게
+                          border: Border.all(
+                              color: Colors.black12, width: 3)), //테두리),
+                      child: DropdownButton(
+                        underline: SizedBox.shrink(),
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        iconSize: 30,
+                        value: _dropdownValue,
+                        items: _MenuType.map((value) => DropdownMenuItem(
+                              value: value,
+                              child: Text(value as String),
+                            )).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            _dropdownValue = newValue!;
+                          });
+                        },
+                        elevation: 4,
                       ),
                     ),
                     Expanded(
