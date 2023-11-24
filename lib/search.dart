@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web/main.dart';
 
+const enable = true;
+
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
 
@@ -29,10 +31,14 @@ class SearchPage extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          Text(
-                            bookname + " 관련 도서",
-                            style: TextStyle(fontSize: 28),
-                          ),
+                          Row(children: [
+                            Expanded(
+                                child: Text(
+                              bookname + " 관련 도서명",
+                              style: TextStyle(fontSize: 28),
+                            )),
+                            BookEnable(),
+                          ]),
                           Container(
                             height: 150,
                             alignment: Alignment.center,
@@ -48,12 +54,33 @@ class SearchPage extends StatelessWidget {
                       ),
                     ),
                     ElevatedButton(
+                        //  onPressed: () {
+                        // 페이지 이동
+                        //      Navigator.push(
+                        //      context,
+                        //    MaterialPageRoute(builder: (context) => InfoPage()),
+                        //);
+
+                        // },
                         onPressed: () {
-                          // 페이지 이동
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => InfoPage()),
-                          );
+                          showDialog(
+                              context: context,
+                              barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: InfoPage(),
+                                  insetPadding:
+                                      const EdgeInsets.fromLTRB(0, 80, 0, 80),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text('확인'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
                         },
                         child: Icon(Icons.search)),
                     Divider(),
@@ -80,139 +107,35 @@ class InfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Book Blog'),
+        title: Text("정보"),
       ),
       body: Column(
         children: [
-          BookList(),
-          Center(
-            child: BlogPostList(),
+          Padding(
+            padding: const EdgeInsets.all(1.0),
+            child: Image.network(
+              "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTda9RBygOiZk8qT1zs2eDjdYv5wCKT1vCfn94GXiLHY0Xjlv3b",
+              width: 200,
+            ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class BlogPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('게시글 제목'),
-      ),
-      body: Column(
-        children: [
           BookList(),
+          BookEnable(),
         ],
       ),
     );
   }
 }
 
-class BlogPostList extends StatelessWidget {
+class BookEnable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          BlogPostCard(
-            title: "게시글제목1",
-            views: "조회수 15",
-            author: "아이디1",
-            description: "내용1",
-          ),
-          SizedBox(height: 20),
-          BlogPostCard(
-            title: "게시글제목2",
-            views: "조회수 없음",
-            author: "아이디2",
-            description: "내용2",
-          ),
-          SizedBox(height: 20),
-          BlogPostCard(
-            title: "게시글제목3",
-            views: "조회수 350",
-            author: "아이디3",
-            description: "내용3",
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class BlogPostCard extends StatelessWidget {
-  final String title;
-  final String author;
-  final String description;
-  final String views;
-
-  BlogPostCard({
-    required this.title,
-    required this.author,
-    required this.description,
-    required this.views,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 3,
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          views,
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'By $author',
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    description,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
-            ),
-            Text("광고 이미지"),
-            ElevatedButton(
-                onPressed: () {
-                  // 페이지 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BlogPage()),
-                  );
-                },
-                child: Icon(Icons.forward)),
-          ],
-        ),
-      ),
-    );
+        child: (enable == false)
+            ? Text("대출 가능")
+            : Text(
+                "대출 불가",
+                style: TextStyle(color: Colors.red),
+              ));
   }
 }
 
@@ -225,7 +148,7 @@ class BookList extends StatelessWidget {
       padding: EdgeInsets.all(16.0),
       child: BookCard(
         booktitle: "책제목",
-        bookauthor: "저자",
+        bookauthor: "저자, 이런저런 정보",
       ),
     );
   }
