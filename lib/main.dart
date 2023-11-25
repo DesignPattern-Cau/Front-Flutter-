@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web/search.dart';
 import 'package:flutter_web/user.dart';
 
+import 'model/book.dart';
+import 'system/bookfunc.dart';
+final back_uri='http://10.0.2.2:5000/'; //통신 uri
+
+
 void main() {
   runApp(const MyApp());
 }
 
 String bookname = "";
+String type = "작가";
+List<Book> booklist =[];
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -111,11 +119,9 @@ class MainPageState extends State<MainPage> {
                       ),
                     ),
                     ElevatedButton(
-                        onPressed: () {
-                          // 페이지 이동
-                          //                     setState(() {
-                          //    inputText = inputController.text;
-                          //   });
+                        onPressed: () async {
+                          //
+                          booklist=await makeBookList(bookname,type);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
