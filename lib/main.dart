@@ -4,8 +4,8 @@ import 'package:flutter_web/user.dart';
 
 import 'model/book.dart';
 import 'system/bookfunc.dart';
-final back_uri='http://10.0.2.2:5000/'; //통신 uri
 
+final back_uri = 'http://10.0.2.2:5000/'; //통신 uri
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +13,7 @@ void main() {
 
 String bookname = "";
 String type = "작가";
-List<Book> booklist =[];
-
+List<Book> booklist = [];
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -121,7 +120,7 @@ class MainPageState extends State<MainPage> {
                     ElevatedButton(
                         onPressed: () async {
                           //
-                          booklist=await makeBookList(bookname,type);
+                          // booklist=await makeBookList(bookname,type);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
