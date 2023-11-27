@@ -6,6 +6,7 @@ import 'model/book.dart';
 import 'system/bookfunc.dart';
 final back_uri='http://127.0.0.1:8080/'; //통신 uri
 
+final back_uri = 'http://10.0.2.2:5000/'; //통신 uri
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,6 @@ void main() {
 String bookname = "";
 String type = "title";
 List<Book> booklist =[];
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
