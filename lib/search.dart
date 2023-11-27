@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web/main.dart';
 import '../model/book.dart';
 
-const enable = true;
+bool enable = false;
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
   @override
   Widget build(BuildContext context) {
     for (int i = 0; i < 10; i++) {
-      Book currBook = Book(i, ("책이름"), i * 10000, i, i, i * 10, i, i,
+      Book currBook = Book(i, ("책이름"), i * 10000, i % 2, i, i * 10, i, i,
           "재밌는 책입니다", DateTime.now(), "isbn", i);
       booklist.add(currBook);
     }
@@ -21,6 +21,7 @@ class SearchPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            //for (int i = 0; i < booklist.length; i++)
             for (int i = 0; i < booklist.length; i++)
               Row(
                 children: <Widget>[
@@ -40,7 +41,7 @@ class SearchPage extends StatelessWidget {
                             booklist[i].title,
                             style: TextStyle(fontSize: 28),
                           )),
-                          BookEnable(),
+                          BookEnable(booklist[i].quantity),
                         ]),
                         Container(
                           height: 150,
@@ -101,6 +102,7 @@ class SearchPage extends StatelessWidget {
                   Divider(),
                 ],
               ),
+            if (booklist.length == 0) NoResult(),
             ElevatedButton(
               child: Text("처음 화면으로"),
               onPressed: () {
@@ -111,6 +113,23 @@ class SearchPage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class NoResult extends StatelessWidget {
+  const NoResult({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 60),
+      child: Container(
+          child: Center(
+        child: Text(
+          "검색 결과가 없습니다. ",
+          style: TextStyle(color: Colors.red),
+        ),
+      )),
     );
   }
 }
@@ -160,18 +179,18 @@ class InfoPage extends StatelessWidget {
             ),
           ),
           Container(
-            child: Text("가격: $price 원"),
-          ),
-          Container(
             width: double.infinity,
             height: 300,
             padding: EdgeInsets.all(16.0),
             child: BookCard(
               booktitle: title,
               bookauthor: "$author_id",
+              price: price,
+              ISBN: ISBN,
+              page: page,
             ),
           ),
-          BookEnable(),
+          BookEnable(quantity),
         ],
       ),
     );
@@ -179,11 +198,15 @@ class InfoPage extends StatelessWidget {
 }
 
 class BookEnable extends StatelessWidget {
+  int able;
+  BookEnable(this.able);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: (enable == false)
-            ? Text("대출 가능")
+        child: (able != 0)
+            ? Text("대출 가능 - 남은 권수 : $able권",
+                style: TextStyle(color: Colors.blue))
             : Text(
                 "대출 불가",
                 style: TextStyle(color: Colors.red),
@@ -191,28 +214,18 @@ class BookEnable extends StatelessWidget {
   }
 }
 
-class BookList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 300,
-      padding: EdgeInsets.all(16.0),
-      child: BookCard(
-        booktitle: "책제목",
-        bookauthor: "저자, 이런저런 정보",
-      ),
-    );
-  }
-}
-
 class BookCard extends StatelessWidget {
-  final String booktitle;
-  final String bookauthor;
-
+  String booktitle;
+  String bookauthor;
+  int price;
+  String ISBN;
+  int page;
   BookCard({
     required this.booktitle,
     required this.bookauthor,
+    required this.price,
+    required this.ISBN,
+    required this.page,
   });
 
   @override
@@ -231,10 +244,25 @@ class BookCard extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'By $bookauthor',
-              style: TextStyle(
-                  fontSize: 14, color: Color.fromARGB(255, 209, 129, 129)),
+              "작가 : " + bookauthor,
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 8),
+            Text(
+              "가격 : $price원",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              "ISBN : " + ISBN,
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              "페이지 수 : $page장",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
           ],
         ),
       ),
