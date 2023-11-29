@@ -4,9 +4,10 @@ import 'package:flutter_web/user.dart';
 
 import 'model/book.dart';
 import 'system/bookfunc.dart';
-final back_uri='http://127.0.0.1:8080/'; //통신 uri
 
-final back_uri = 'http://10.0.2.2:5000/'; //통신 uri
+final back_uri = 'http://127.0.0.1:8080/'; //통신 uri
+
+//final back_uri = 'http://10.0.2.2:5000/'; //통신 uri
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,8 @@ void main() {
 
 String bookname = "";
 String type = "title";
-List<Book> booklist =[];
+List<Book> booklist = [];
+String _dropdownValue = "";
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -35,7 +37,6 @@ class MainPage extends StatefulWidget {
 
 class MainPageState extends State<MainPage> {
   final _MenuType = ["제목", "작가"];
-  String _dropdownValue = "";
   @override
   void initState() {
     super.initState();
@@ -121,7 +122,11 @@ class MainPageState extends State<MainPage> {
                     ElevatedButton(
                         onPressed: () async {
                           //
-                          booklist=await makeBookList(type,bookname);
+                          if (_dropdownValue == "제목")
+                            type = "title";
+                          else
+                            type = "authorName";
+                          booklist = await makeBookList(type, bookname);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -129,6 +134,20 @@ class MainPageState extends State<MainPage> {
                           );
                         },
                         child: Icon(Icons.search)),
+                    ElevatedButton(
+                        //임시로 search page로 넘어가는 버튼
+                        onPressed: () {
+                          if (_dropdownValue == "제목")
+                            type = "title";
+                          else
+                            type = "authorName";
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SearchPage()),
+                          );
+                        },
+                        child: Icon(Icons.question_mark)),
                   ],
                 ),
               ),

@@ -8,64 +8,107 @@ class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < 10; i++) {
-      Book currBook = Book(i, ("책이름"), i * 10000, i % 2, i, i * 10, i, i,
-          "재밌는 책입니다", DateTime.now(), "isbn", i);
-      booklist.add(currBook);
+    String result;
+    if (type == "title") {
+      result = "제목";
+    } else {
+      result = "작가";
     }
+    Book currBook = Book(
+        0,
+        "해리포터와 마법사의 돌",
+        7000,
+        2,
+        "조앤.K.롤링",
+        0,
+        "문학",
+        20,
+        "어둠의 마왕 볼드모트에게 부모를 잃고",
+        "",
+        "978-89-8392-068-3",
+        250,
+        "https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788983927620.jpg");
+    booklist.add(currBook);
+    currBook = Book(
+        0,
+        "해리포터와 불사조기사단",
+        22000,
+        0,
+        "조앤.K.롤링",
+        0,
+        "문학",
+        20,
+        "사사건건 해리를 괴롭히는 사촌 두들리와 다투다 디멘터의 습격을 받은 해리는",
+        "",
+        "978-89-5976-000-8",
+        290,
+        "https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788983927934.jpg");
+    booklist.add(currBook);
+    currBook = Book(
+        0,
+        "해리포터와 비밀의 방",
+        8100,
+        4,
+        "조앤.K.롤링",
+        0,
+        "문학",
+        20,
+        "더즐리 이모부네 집에서 끔찍한 방학을 보내던 해리에게 도비라는 집요정이 나타나",
+        "",
+        "978-89-8392-068-3",
+        320,
+        "https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788983927644.jpg");
+    booklist.add(currBook);
+    int k = booklist.length;
     return Scaffold(
       appBar: AppBar(
-        title: Text(bookname),
+        title: Text(result + " 검색결과 : $k개"),
       ),
-      backgroundColor: Color.fromARGB(232, 226, 231, 238),
+      backgroundColor: Color.fromARGB(255, 241, 245, 223),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            //for (int i = 0; i < booklist.length; i++)
             for (int i = 0; i < booklist.length; i++)
               Row(
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(1.0),
                     child: Image.network(
-                      "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                      booklist[i].imgURL,
                       width: 200,
                     ),
                   ),
                   Expanded(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Row(children: [
                           Expanded(
                               child: Text(
                             booklist[i].title,
-                            style: TextStyle(fontSize: 28),
+                            style: TextStyle(
+                                fontSize: 28, fontWeight: FontWeight.bold),
                           )),
                           BookEnable(booklist[i].quantity),
                         ]),
                         Container(
-                          height: 150,
-                          alignment: Alignment.center,
+                          height: 280,
+                          alignment: Alignment.topLeft,
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 138, 156, 160),
+                            color: Color.fromARGB(255, 255, 255, 255),
                           ),
                           child: Text(
-                            " 설명: " + booklist[i].description,
-                            style: TextStyle(fontSize: 28),
+                            " - " + booklist[i].description,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            maxLines: 3,
+                            style: TextStyle(fontSize: 18),
                           ),
                         ),
                       ],
                     ),
                   ),
                   ElevatedButton(
-                      //  onPressed: () {
-                      // 페이지 이동
-                      //      Navigator.push(
-                      //      context,
-                      //    MaterialPageRoute(builder: (context) => InfoPage()),
-                      //);
-
-                      // },
                       onPressed: () {
                         showDialog(
                             context: context,
@@ -77,14 +120,15 @@ class SearchPage extends StatelessWidget {
                                     booklist[i].title,
                                     booklist[i].price,
                                     booklist[i].quantity,
-                                    booklist[i].author_id,
+                                    booklist[i].authorName,
                                     booklist[i].sales,
-                                    booklist[i].category_id,
+                                    booklist[i].category,
                                     booklist[i].likes,
                                     booklist[i].description,
-                                    booklist[i].register_at,
+                                    booklist[i].registerAt,
                                     booklist[i].ISBN,
-                                    booklist[i].page),
+                                    booklist[i].page,
+                                    booklist[i].imgURL),
                                 insetPadding:
                                     const EdgeInsets.fromLTRB(0, 80, 0, 80),
                                 actions: [
@@ -103,6 +147,7 @@ class SearchPage extends StatelessWidget {
                 ],
               ),
             if (booklist.length == 0) NoResult(),
+            SizedBox(height: 60),
             ElevatedButton(
               child: Text("처음 화면으로"),
               onPressed: () {
@@ -139,28 +184,30 @@ class InfoPage extends StatelessWidget {
   String title;
   int price;
   int quantity;
-  int author_id;
+  String authorName;
   int sales;
-  int category_id;
+  String category;
   int likes;
   String description;
-  DateTime register_at;
+  String registerAt;
   String ISBN;
   int page;
+  String imgURL;
 
   InfoPage(
       this.book_idx,
       this.title,
       this.price,
       this.quantity,
-      this.author_id,
+      this.authorName,
       this.sales,
-      this.category_id,
+      this.category,
       this.likes,
       this.description,
-      this.register_at,
+      this.registerAt,
       this.ISBN,
       this.page,
+      this.imgURL,
       {super.key});
 
   @override
@@ -174,7 +221,7 @@ class InfoPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(1.0),
             child: Image.network(
-              "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTda9RBygOiZk8qT1zs2eDjdYv5wCKT1vCfn94GXiLHY0Xjlv3b",
+              imgURL,
               width: 200,
             ),
           ),
@@ -184,10 +231,11 @@ class InfoPage extends StatelessWidget {
             padding: EdgeInsets.all(16.0),
             child: BookCard(
               booktitle: title,
-              bookauthor: "$author_id",
+              bookauthor: authorName,
               price: price,
               ISBN: ISBN,
               page: page,
+              category: category,
             ),
           ),
           BookEnable(quantity),
@@ -220,12 +268,15 @@ class BookCard extends StatelessWidget {
   int price;
   String ISBN;
   int page;
+  String category;
+
   BookCard({
     required this.booktitle,
     required this.bookauthor,
     required this.price,
     required this.ISBN,
     required this.page,
+    required this.category,
   });
 
   @override
@@ -240,11 +291,16 @@ class BookCard extends StatelessWidget {
           children: [
             Text(
               booktitle,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
             Text(
               "작가 : " + bookauthor,
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              "카테고리 : " + category,
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
