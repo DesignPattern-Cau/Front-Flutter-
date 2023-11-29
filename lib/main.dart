@@ -125,7 +125,7 @@ class MainPageState extends State<MainPage> {
                           if (_dropdownValue == "제목")
                             type = "title";
                           else
-                            type = "authorName";
+                            type = "author";
                           booklist = await makeBookList(type, bookname);
                           Navigator.push(
                             context,
@@ -134,20 +134,7 @@ class MainPageState extends State<MainPage> {
                           );
                         },
                         child: Icon(Icons.search)),
-                    ElevatedButton(
-                        //임시로 search page로 넘어가는 버튼
-                        onPressed: () {
-                          if (_dropdownValue == "제목")
-                            type = "title";
-                          else
-                            type = "authorName";
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SearchPage()),
-                          );
-                        },
-                        child: Icon(Icons.question_mark)),
+
                   ],
                 ),
               ),

@@ -14,51 +14,7 @@ class SearchPage extends StatelessWidget {
     } else {
       result = "작가";
     }
-    Book currBook = Book(
-        0,
-        "해리포터와 마법사의 돌",
-        7000,
-        2,
-        "조앤.K.롤링",
-        0,
-        "문학",
-        20,
-        "어둠의 마왕 볼드모트에게 부모를 잃고",
-        "",
-        "978-89-8392-068-3",
-        250,
-        "https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788983927620.jpg");
-    booklist.add(currBook);
-    currBook = Book(
-        0,
-        "해리포터와 불사조기사단",
-        22000,
-        0,
-        "조앤.K.롤링",
-        0,
-        "문학",
-        20,
-        "사사건건 해리를 괴롭히는 사촌 두들리와 다투다 디멘터의 습격을 받은 해리는",
-        "",
-        "978-89-5976-000-8",
-        290,
-        "https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788983927934.jpg");
-    booklist.add(currBook);
-    currBook = Book(
-        0,
-        "해리포터와 비밀의 방",
-        8100,
-        4,
-        "조앤.K.롤링",
-        0,
-        "문학",
-        20,
-        "더즐리 이모부네 집에서 끔찍한 방학을 보내던 해리에게 도비라는 집요정이 나타나",
-        "",
-        "978-89-8392-068-3",
-        320,
-        "https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788983927644.jpg");
-    booklist.add(currBook);
+
     int k = booklist.length;
     return Scaffold(
       appBar: AppBar(
@@ -216,30 +172,34 @@ class InfoPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("상세 정보"),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(1.0),
-            child: Image.network(
-              imgURL,
-              width: 200,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+
+            Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Image.network(
+                imgURL,
+                width: 200,
+                height: 300,
+              ),
             ),
-          ),
-          Container(
-            width: double.infinity,
-            height: 300,
-            padding: EdgeInsets.all(16.0),
-            child: BookCard(
-              booktitle: title,
-              bookauthor: authorName,
-              price: price,
-              ISBN: ISBN,
-              page: page,
-              category: category,
+            Container(
+              width: double.infinity,
+              height: 300,
+              padding: EdgeInsets.all(16.0),
+              child: BookCard(
+                booktitle: title,
+                bookauthor: authorName,
+                price: price,
+                ISBN: ISBN,
+                page: page,
+                category: category,
+              ),
             ),
-          ),
-          BookEnable(quantity),
-        ],
+            BookEnable(quantity),
+          ],
+        ),
       ),
     );
   }
